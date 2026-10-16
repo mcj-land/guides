@@ -9,12 +9,90 @@
   },
   "favicon": "/favicon.svg",
   "navigation": {
-    "pages": [
+    "tabs": [
       {
-        "group": "Getting Started",
-        "pages": [
-          "index",
-          "quickstart"
+        "tab": "Inicio",
+        "icon": "house",
+        "groups": [
+          {
+            "group": "Getting Started",
+            "pages": [
+              "index",
+              "quickstart"
+            ]
+          }
+        ]
+      },
+      {
+        "tab": "Python",
+        "icon": "python",
+        "groups": [
+          {
+            "group": "Introducción",
+            "pages": [
+              "python/index"
+            ]
+          }
+        ]
+      },
+      {
+        "tab": "Go",
+        "icon": "golang",
+        "groups": [
+          {
+            "group": "Introducción",
+            "pages": [
+              "go/index"
+            ]
+          }
+        ]
+      },
+      {
+        "tab": "Rust",
+        "icon": "rust",
+        "groups": [
+          {
+            "group": "Introducción",
+            "pages": [
+              "rust/index"
+            ]
+          }
+        ]
+      },
+      {
+        "tab": "Azure",
+        "icon": "microsoft",
+        "groups": [
+          {
+            "group": "Introducción",
+            "pages": [
+              "azure/index"
+            ]
+          }
+        ]
+      },
+      {
+        "tab": "AWS",
+        "icon": "aws",
+        "groups": [
+          {
+            "group": "Introducción",
+            "pages": [
+              "aws/index"
+            ]
+          }
+        ]
+      },
+      {
+        "tab": "Artificial Intelligence",
+        "icon": "brain-circuit",
+        "groups": [
+          {
+            "group": "Introducción",
+            "pages": [
+              "ai/index"
+            ]
+          }
         ]
       }
     ],
