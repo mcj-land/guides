@@ -3,15 +3,6 @@ title: "The agent loop"
 description: "The core cycle every agent runs, whatever the framework."
 ---
 
-```mermaid
-flowchart LR
-  input["Request + history"] --> think["LLM decides"]
-  think -->|"tool call"| act["Run tool"]
-  act --> observe["Add result to context"]
-  observe --> think
-  think -->|"final answer"| out["Response"]
-```
-
 1. Build the context: system prompt, conversation history, available tools, the user's request.
 2. Call the model.
 3. If the model asks for a tool, run it and add the result to the context. Go back to step 2.

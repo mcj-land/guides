@@ -8,19 +8,6 @@ An agent is an LLM in a loop: it reads the request, decides what to do, calls to
 
 ## The big picture
 
-```mermaid
-flowchart TB
-  client["Client"] --> api["API"]
-  api --> runtime["Runtime<br/>(runs the agent loop)"]
-  runtime --> agentA["Agent A"]
-  runtime --> agentB["Agent B"]
-  agentA & agentB --> model["Model gateway"]
-  agentA & agentB --> tools["Tools"]
-  agentA & agentB --> memory["Memory"]
-  agentA & agentB --> prompts["Prompts"]
-  obs["Observability"] -.- api & runtime & model & tools
-```
-
 | Part | Job |
 |---|---|
 | [API](/agents/architecture/api) | Accepts requests, authenticates, returns or streams the answer |

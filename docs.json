@@ -149,25 +149,7 @@
           {
             "group": "TdE - Plataforma Agéntica",
             "pages": [
-              "ey/tde-plataforma-agentica/index",
-              {
-                "group": "Pro-code archetype",
-                "pages": [
-                  "ey/tde-plataforma-agentica/pro-code-archetype/index",
-                  {
-                    "group": "Layers",
-                    "pages": [
-                      "ey/tde-plataforma-agentica/pro-code-archetype/api-layer",
-                      "ey/tde-plataforma-agentica/pro-code-archetype/agent-layer",
-                      "ey/tde-plataforma-agentica/pro-code-archetype/core-layer",
-                      "ey/tde-plataforma-agentica/pro-code-archetype/periphery-layer"
-                    ]
-                  },
-                  "ey/tde-plataforma-agentica/pro-code-archetype/request-flow",
-                  "ey/tde-plataforma-agentica/pro-code-archetype/design-principles",
-                  "ey/tde-plataforma-agentica/pro-code-archetype/add-an-agent"
-                ]
-              }
+              "ey/tde-plataforma-agentica/index"
             ]
           }
         ]
