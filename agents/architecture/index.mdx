@@ -1,29 +1,57 @@
 ---
 title: "Agent architecture"
 sidebarTitle: "Overview"
-description: "How a scalable AI agent service is put together, independent of framework or cloud."
+description: "My reference architecture for building AI agents that scale, independent of framework or cloud."
 ---
 
-An agent is an LLM in a loop: it reads the request, decides what to do, calls tools, looks at the results and repeats until it can answer. Everything else in the architecture exists to run that loop reliably for many users at once.
+An agent is an LLM in a loop: it reads the request, decides what to do, calls tools, looks at the results and repeats until it can answer. The architecture exists to run that loop reliably for many users, and to make each new agent cheap to add.
 
-## The big picture
+## Four layers
 
-| Part | Job |
-|---|---|
-| [API](/agents/architecture/api) | Accepts requests, authenticates, returns or streams the answer |
-| [Runtime](/agents/architecture/runtime) | Picks the agent and runs its loop behind one common interface |
-| [Model gateway](/agents/architecture/model-gateway) | One way to call any LLM, with retries, fallbacks and limits |
-| [Tools](/agents/architecture/tools) | The actions an agent can take in other systems |
-| [Memory](/agents/architecture/memory) | Conversation history and long-term knowledge |
-| [Prompts](/agents/architecture/prompts) | Instructions, versioned outside the code |
-| [Observability](/agents/architecture/observability) | Traces, cost and quality of every run |
+| Layer | Job | Changes when |
+|---|---|---|
+| [API](/agents/architecture/api-layer) | Receives HTTP requests, validates them and hands them to the runtime | You add an endpoint or a client |
+| [Agent](/agents/architecture/agent-layer) | Business logic: the runtime, the agents, workflows and prompts | You add or change an agent |
+| [Core](/agents/architecture/core-layer) | Shared contracts and services: models, memory, prompts, tools, observability | You change a provider or a shared capability |
+| [Periphery](/agents/architecture/periphery-layer) | Tool implementations, configuration and utilities | You integrate a new system |
 
-## Why split it this way
+Dependencies point inwards. The API depends on the runtime interface, agents depend on Core interfaces, and Periphery implements those interfaces. Nothing in Core knows about a specific agent.
 
-Each part changes for a different reason. Models change every few months, tools change when you integrate a new system, and prompts change daily. Keeping them behind separate interfaces means you can swap one without touching the others. New agents then only bring their own prompt and tools, and reuse the rest.
+## Project layout
+
+```text
+src/
+├── main.py                  # Creates the app and middleware
+├── api/
+│   ├── router.py            # Registers routes
+│   ├── endpoints/           # invoke, stream, health, agent_card
+│   ├── request_handler.py   # Normalizes requests, sets the trace ID
+│   └── schemas/             # Request and response models
+├── agent/
+│   ├── container.py         # Composition root: builds and wires everything
+│   ├── runtime.py           # Implements AgentRuntime
+│   ├── agents/              # One package per agent
+│   ├── workflows/           # Multi-step and multi-agent flows
+│   └── prompts/             # Versioned prompts
+├── core/
+│   ├── interfaces/          # AgentRuntime, LLMClient, MemoryStore, PromptSource, Tool
+│   ├── llm/                 # Model gateway: clients and factory
+│   ├── memory/              # Conversation history providers
+│   ├── prompt_manager/      # Loads prompts from their sources
+│   ├── tool_registry/       # Registers tools and gives each agent its own
+│   └── observability.py     # Tracing, metrics, telemetry
+├── tools/                   # Local tools and MCP clients
+├── config/
+│   ├── settings.py          # App settings from the environment
+│   └── identity.py          # Credentials and identity
+└── utils/
+tests/
+```
 
 ## Topics
 
 - [The agent loop](/agents/architecture/agent-loop)
+- [Request flow](/agents/architecture/request-flow)
+- [Add a new agent](/agents/architecture/add-an-agent)
 - [Scaling](/agents/architecture/scaling)
 - [Design principles](/agents/architecture/design-principles)

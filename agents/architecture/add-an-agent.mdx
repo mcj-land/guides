@@ -1,0 +1,27 @@
+---
+title: "Add a new agent"
+description: "What you write for a new agent, and what you reuse."
+---
+
+A new agent should only bring its prompt, its tools and its configuration. The API, runtime and Core stay the same.
+
+<Steps>
+  <Step title="Write the prompt">
+    Add a versioned prompt in `src/agent/prompts/`.
+  </Step>
+  <Step title="Add the tools it needs">
+    Reuse existing tools where you can. For new ones, implement `Tool` in `src/tools/` and register it in the tool registry.
+  </Step>
+  <Step title="Define the agent">
+    Add a package in `src/agent/agents/` with its prompt, tools, model and limits.
+  </Step>
+  <Step title="Register it in the container">
+    Add the agent in `src/agent/container.py` so the runtime can find it.
+  </Step>
+  <Step title="Publish its agent card">
+    Describe what it does and what input it takes, so clients can discover it.
+  </Step>
+  <Step title="Test it">
+    Add evaluation cases for the agent and run them before release.
+  </Step>
+</Steps>

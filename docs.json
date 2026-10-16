@@ -113,17 +113,26 @@
               "agents/architecture/index",
               "agents/architecture/agent-loop",
               {
-                "group": "Components",
+                "group": "Layers",
                 "pages": [
-                  "agents/architecture/api",
-                  "agents/architecture/runtime",
-                  "agents/architecture/model-gateway",
-                  "agents/architecture/tools",
-                  "agents/architecture/memory",
-                  "agents/architecture/prompts",
-                  "agents/architecture/observability"
+                  "agents/architecture/api-layer",
+                  "agents/architecture/agent-layer",
+                  {
+                    "group": "Core layer",
+                    "pages": [
+                      "agents/architecture/core-layer",
+                      "agents/architecture/model-gateway",
+                      "agents/architecture/memory",
+                      "agents/architecture/prompts",
+                      "agents/architecture/tools",
+                      "agents/architecture/observability"
+                    ]
+                  },
+                  "agents/architecture/periphery-layer"
                 ]
               },
+              "agents/architecture/request-flow",
+              "agents/architecture/add-an-agent",
               "agents/architecture/scaling",
               "agents/architecture/design-principles"
             ]

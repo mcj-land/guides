@@ -1,0 +1,40 @@
+---
+title: "Agent layer"
+description: "The runtime, the agents, workflows and prompts."
+---
+
+Location: `src/agent/`.
+
+This layer holds the business logic. It decouples running agents from the rest of the infrastructure, so you add agents without touching the API.
+
+## Runtime
+
+The runtime is the contract between the API and the agents. The API calls `invoke()` or `stream()` and never knows which framework the agent uses.
+
+```python
+class AgentRuntime(Protocol):
+    async def invoke(self, request: AgentRequest) -> AgentResponse: ...
+    def stream(self, request: AgentRequest) -> AsyncIterator[AgentEvent]: ...
+```
+
+It finds the agent for the request, loads the conversation state, runs the [agent loop](/agents/architecture/agent-loop) with its limits, saves the new state and returns the result.
+
+Frameworks such as LangGraph, Microsoft Agent Framework or the OpenAI and Anthropic agent SDKs all implement some version of this loop. Wrap the one you use behind `AgentRuntime` so you can change or mix frameworks later.
+
+## Container
+
+`container.py` is the composition root. It is the only place that creates concrete objects: model clients, memory stores, prompt sources, tools and settings. It injects them into the runtime and the agents.
+
+Agents ask for what they need instead of creating it. That makes it easy to swap an implementation, and to test an agent with fakes.
+
+## Agents
+
+One package per agent in `agents/`. An agent is mostly configuration: a prompt, a list of tools, a model choice and its limits. If an agent needs a lot of code, that code probably belongs in a tool or in Core.
+
+## Workflows
+
+`workflows/` holds flows where your code decides the steps, and agents run at one or more of them. Use them for multi-step processes and for coordinating several agents.
+
+## Prompts
+
+`prompts/` holds the versioned prompts for each agent. See [Prompts](/agents/architecture/prompts).

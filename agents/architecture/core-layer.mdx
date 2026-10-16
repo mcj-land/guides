@@ -1,0 +1,31 @@
+---
+title: "Core layer"
+sidebarTitle: "Overview"
+description: "Shared contracts and services that every agent reuses."
+---
+
+Location: `src/core/`.
+
+Core is what you build once and every agent reuses. It has no knowledge of any specific agent.
+
+## Interfaces
+
+Small contracts in `core/interfaces/`. Everything else depends on these, not on concrete classes.
+
+| Interface | Contract for |
+|---|---|
+| `AgentRuntime` | Running agents: `invoke()`, `stream()` |
+| `LLMClient` | Calling a model |
+| `MemoryStore` | Reading and writing conversation history |
+| `PromptSource` | Loading a prompt by name and version |
+| `Tool` | Name, description, input schema, `run()` |
+
+## Services
+
+| Module | Job | Details |
+|---|---|---|
+| `llm/` | One client for every model, with routing, retries and cost tracking | [Model gateway](/agents/architecture/model-gateway) |
+| `memory/` | Conversation history and long-term memory | [Memory](/agents/architecture/memory) |
+| `prompt_manager/` | Loads versioned prompts | [Prompts](/agents/architecture/prompts) |
+| `tool_registry/` | Registers tools and scopes them per agent | [Tools](/agents/architecture/tools) |
+| `observability.py` | Traces, metrics and telemetry | [Observability](/agents/architecture/observability) |

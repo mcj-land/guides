@@ -1,0 +1,25 @@
+---
+title: "Periphery layer"
+description: "Tool implementations, configuration and utilities."
+---
+
+Location: `src/tools/`, `src/config/` and `src/utils/`.
+
+The periphery is where the platform touches the outside world. Keeping it separate means a change in an external system never reaches agent logic.
+
+## Tools
+
+`tools/` holds the tool implementations: local tools that run in-process, and clients for MCP servers. Each one implements the `Tool` interface and is registered in the tool registry. See [Tools](/agents/architecture/tools).
+
+## Configuration
+
+| File | Job |
+|---|---|
+| `settings.py` | Typed settings loaded from the environment, for example with Pydantic Settings |
+| `identity.py` | How the service authenticates: managed identity, service principal or API keys from a secret store |
+
+Never hard-code secrets. Load them from the environment or a secret store such as Key Vault or Secrets Manager.
+
+## Utilities
+
+`utils/` holds small helpers with no business logic, for example building agent cards.

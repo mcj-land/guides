@@ -1,0 +1,37 @@
+---
+title: "API layer"
+description: "Receives requests, validates them and hands them to the runtime."
+---
+
+Location: `src/main.py` and `src/api/`.
+
+Keep the API thin. It authenticates, validates, assigns a trace ID and calls the runtime. It knows nothing about models, prompts or tools.
+
+## Components
+
+| Component | Job |
+|---|---|
+| `main.py` | Creates the app (for example FastAPI) and adds middleware: auth, CORS, logging |
+| `api/router.py` | Registers routes and gets the runtime from the container |
+| `api/endpoints/` | One module per endpoint |
+| `api/request_handler.py` | Turns HTTP requests into a common `AgentRequest` and sets the trace ID |
+| `api/schemas/` | Request and response models, validated at the edge |
+
+## Endpoints
+
+| Endpoint | Purpose |
+|---|---|
+| `invoke` | Run the agent and return the full answer |
+| `stream` | Return tokens and steps as they are produced (SSE or WebSocket) |
+| `health` | Liveness and readiness for the load balancer |
+| `agent_card` | Describe the available agents, their inputs and skills |
+
+## Sync, streaming or async
+
+- **Sync:** fine for answers in a few seconds.
+- **Streaming:** better UX for chat. The user sees progress at once.
+- **Async jobs:** for long runs. Return a job ID, put the work on a queue and let the client poll or receive a webhook.
+
+## Trace ID
+
+Create a trace ID on every request, or accept one from the caller, and pass it through every layer. It is the only way to follow one run across logs, model calls and tools.

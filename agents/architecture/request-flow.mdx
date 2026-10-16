@@ -1,0 +1,19 @@
+---
+title: "Request flow"
+description: "How one request moves through the layers."
+---
+
+1. The client sends an HTTP request.
+2. `api/router.py` matches it to an endpoint.
+3. `api/request_handler.py` validates it, turns it into an `AgentRequest` and sets the trace ID.
+4. The runtime picks the agent and loads the conversation from memory.
+5. The agent runs its [loop](/agents/architecture/agent-loop), using Core services:
+   - `llm/` to call the model.
+   - `prompt_manager/` for its prompt.
+   - `tool_registry/` for its tools.
+   - `memory/` for history.
+6. Tools in `tools/` run when the model calls them.
+7. The runtime saves the new state.
+8. The result goes back through the API, as one response or as a stream.
+
+Every step logs and traces with the same trace ID.
