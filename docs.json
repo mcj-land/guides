@@ -96,6 +96,18 @@
             ]
           }
         ]
+      },
+      {
+        "tab": "Customer (EY)",
+        "icon": "briefcase",
+        "groups": [
+          {
+            "group": "Introduction",
+            "pages": [
+              "ey/index"
+            ]
+          }
+        ]
       }
     ],
     "global": {
