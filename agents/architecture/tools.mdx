@@ -1,0 +1,28 @@
+---
+title: "Tools"
+description: "How agents act on other systems."
+---
+
+A tool is a function the model can call. It has a name, a description, an input schema and an implementation. The model only sees the name, description and schema, so write those for the model.
+
+## Tool registry
+
+Register tools in one place and give each agent only the tools it needs. Fewer tools mean better tool choice and less risk.
+
+## Local tools or MCP
+
+| | Local tool | MCP server |
+|---|---|---|
+| Runs | In the agent process | As a separate service |
+| Good for | Simple, fast, agent-specific logic | Shared integrations used by many agents or apps |
+| Deploy | With the agent | Independently |
+
+[MCP](https://modelcontextprotocol.io) is the standard protocol for exposing tools to agents. Use it when a tool should be reused or owned by another team.
+
+## Make tools safe
+
+- Validate the input. The model can send anything.
+- Set timeouts and return errors the model can understand and act on.
+- Make write actions idempotent where possible.
+- Run with the user's permissions, not a superuser account.
+- Ask for human approval before irreversible actions.

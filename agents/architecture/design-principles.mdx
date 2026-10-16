@@ -1,0 +1,16 @@
+---
+title: "Design principles"
+description: "Rules that keep an agent platform easy to change and scale."
+---
+
+| Principle | In practice |
+|---|---|
+| One runtime interface | The API calls `invoke()` and `stream()`, never a framework directly. |
+| Depend on interfaces | Models, tools, memory and prompts sit behind small contracts you can swap or fake. |
+| Wire dependencies in one place | A single composition root builds and injects everything. |
+| Stateless compute | State lives in external stores so any instance can serve any request. |
+| Prompts are config | Versioned, loaded at runtime, tested before release. |
+| Least privilege tools | Each agent gets only the tools it needs, with the user's permissions. |
+| Bounded loops | Every run has step, token and time limits. |
+| Observe everything | Every request has a trace ID that follows it through all layers. |
+| Add agents, not architecture | A new agent brings a prompt and tools, and reuses the rest. |

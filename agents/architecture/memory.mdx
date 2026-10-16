@@ -1,0 +1,18 @@
+---
+title: "Memory"
+description: "What the agent remembers, and where it is stored."
+---
+
+| Type | Holds | Typical store |
+|---|---|---|
+| Short-term | The current conversation | Redis, Cosmos DB, Postgres |
+| Long-term | Facts about the user or past sessions | Database or vector store |
+| Knowledge | Documents the agent searches (RAG) | Vector or hybrid search index |
+
+## Keep agents stateless
+
+Store conversation state outside the agent process, keyed by a session ID. Any instance can then serve any request, which is what lets you [scale out](/agents/architecture/scaling).
+
+## Manage the context window
+
+History grows with every turn. Trim old messages, summarize them, or keep only the last N turns. Long contexts cost more and often make answers worse.

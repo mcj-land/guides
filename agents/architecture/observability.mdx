@@ -1,0 +1,22 @@
+---
+title: "Observability"
+description: "See what every agent run did, what it cost and how good it was."
+---
+
+Agents are non-deterministic. Without traces you can't tell why an answer was wrong.
+
+## Traces
+
+Record one trace per request, with a span for each step: model calls, tool calls and memory reads. Include the prompt version, model, tokens and latency. OpenTelemetry has semantic conventions for generative AI, and most tools, such as Langfuse, Azure Monitor or Datadog, can read them.
+
+## Metrics
+
+- Latency per request and per step.
+- Tokens and cost per agent, user and tenant.
+- Error rate and tool failure rate.
+- Number of steps per run.
+
+## Evaluation
+
+- **Offline:** a test set of inputs and expected behaviour, run on every change.
+- **Online:** sample production runs and score them with rules, an LLM judge or user feedback.

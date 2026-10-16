@@ -1,0 +1,42 @@
+---
+title: "Agent architecture"
+sidebarTitle: "Overview"
+description: "How a scalable AI agent service is put together, independent of framework or cloud."
+---
+
+An agent is an LLM in a loop: it reads the request, decides what to do, calls tools, looks at the results and repeats until it can answer. Everything else in the architecture exists to run that loop reliably for many users at once.
+
+## The big picture
+
+```mermaid
+flowchart TB
+  client["Client"] --> api["API"]
+  api --> runtime["Runtime<br/>(runs the agent loop)"]
+  runtime --> agentA["Agent A"]
+  runtime --> agentB["Agent B"]
+  agentA & agentB --> model["Model gateway"]
+  agentA & agentB --> tools["Tools"]
+  agentA & agentB --> memory["Memory"]
+  agentA & agentB --> prompts["Prompts"]
+  obs["Observability"] -.- api & runtime & model & tools
+```
+
+| Part | Job |
+|---|---|
+| [API](/agents/architecture/api) | Accepts requests, authenticates, returns or streams the answer |
+| [Runtime](/agents/architecture/runtime) | Picks the agent and runs its loop behind one common interface |
+| [Model gateway](/agents/architecture/model-gateway) | One way to call any LLM, with retries, fallbacks and limits |
+| [Tools](/agents/architecture/tools) | The actions an agent can take in other systems |
+| [Memory](/agents/architecture/memory) | Conversation history and long-term knowledge |
+| [Prompts](/agents/architecture/prompts) | Instructions, versioned outside the code |
+| [Observability](/agents/architecture/observability) | Traces, cost and quality of every run |
+
+## Why split it this way
+
+Each part changes for a different reason. Models change every few months, tools change when you integrate a new system, and prompts change daily. Keeping them behind separate interfaces means you can swap one without touching the others. New agents then only bring their own prompt and tools, and reuse the rest.
+
+## Topics
+
+- [The agent loop](/agents/architecture/agent-loop)
+- [Scaling](/agents/architecture/scaling)
+- [Design principles](/agents/architecture/design-principles)

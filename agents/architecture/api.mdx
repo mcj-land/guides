@@ -1,0 +1,25 @@
+---
+title: "API"
+description: "The entry point that clients call."
+---
+
+Keep the API thin. It authenticates, validates, assigns a trace ID and hands the request to the runtime. It knows nothing about models or tools.
+
+## Endpoints you usually need
+
+| Endpoint | Purpose |
+|---|---|
+| Invoke | Run the agent and return the full answer |
+| Stream | Return tokens and steps as they are produced (SSE or WebSocket) |
+| Health | Liveness and readiness for the load balancer |
+| Agent card | Describe the available agents and what they do |
+
+## Sync, streaming or async
+
+- **Sync:** fine for answers in a few seconds.
+- **Streaming:** better UX for chat. The user sees progress at once.
+- **Async jobs:** for long runs. Return a job ID, put the work on a queue and let the client poll or receive a webhook.
+
+## Request ID
+
+Create a trace ID on every request, or accept one from the caller, and pass it through every layer. It is the only way to follow one run across logs, model calls and tools.

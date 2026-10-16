@@ -1,0 +1,27 @@
+---
+title: "Scaling"
+description: "What changes when you go from one user to thousands."
+---
+
+## Scale out stateless workers
+
+Run the API and runtime as stateless containers behind a load balancer. With state in [memory stores](/agents/architecture/memory), you add instances to handle more traffic.
+
+## The real bottleneck is the model
+
+Model rate limits and latency usually run out before CPU does. To handle it:
+
+- Spread load across deployments, regions or providers through the [model gateway](/agents/architecture/model-gateway).
+- Use smaller models for simple steps.
+- Cache where you can.
+- Queue long-running work instead of holding connections open.
+
+## Control cost
+
+- Set token and step limits per run.
+- Set budgets per tenant or user.
+- Track cost per agent so you know which one to optimize.
+
+## Isolate failures
+
+Give each slow or unreliable tool its own timeout and circuit breaker. One failing integration should not take down every agent.

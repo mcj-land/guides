@@ -1,0 +1,19 @@
+---
+title: "Model gateway"
+description: "One client for every LLM call."
+---
+
+Agents never call a provider SDK directly. They call a model client with a common interface, and the gateway handles the rest.
+
+## Responsibilities
+
+- **Provider abstraction:** the same call works for any model or provider.
+- **Routing:** cheap models for simple steps, strong models for hard ones.
+- **Retries and fallbacks:** retry on transient errors, fall back to another model or region.
+- **Rate limits and quotas:** per agent, per tenant or per user.
+- **Cost tracking:** record tokens and cost on every call.
+- **Caching:** prompt caching from the provider, and response caching where answers repeat.
+
+## Build or buy
+
+You can write a thin factory yourself, or use a gateway such as LiteLLM or a cloud API management layer. Either way, keep the interface your agents see small and stable.

@@ -108,21 +108,24 @@
             ]
           },
           {
-            "group": "Pro-code agent archetype",
+            "group": "Agent architecture",
             "pages": [
-              "agents/pro-code-archetype/index",
+              "agents/architecture/index",
+              "agents/architecture/agent-loop",
               {
-                "group": "Layers",
+                "group": "Components",
                 "pages": [
-                  "agents/pro-code-archetype/api-layer",
-                  "agents/pro-code-archetype/agent-layer",
-                  "agents/pro-code-archetype/core-layer",
-                  "agents/pro-code-archetype/periphery-layer"
+                  "agents/architecture/api",
+                  "agents/architecture/runtime",
+                  "agents/architecture/model-gateway",
+                  "agents/architecture/tools",
+                  "agents/architecture/memory",
+                  "agents/architecture/prompts",
+                  "agents/architecture/observability"
                 ]
               },
-              "agents/pro-code-archetype/request-flow",
-              "agents/pro-code-archetype/design-principles",
-              "agents/pro-code-archetype/add-an-agent"
+              "agents/architecture/scaling",
+              "agents/architecture/design-principles"
             ]
           }
         ]
@@ -146,7 +149,25 @@
           {
             "group": "TdE - Plataforma Agéntica",
             "pages": [
-              "ey/tde-plataforma-agentica/index"
+              "ey/tde-plataforma-agentica/index",
+              {
+                "group": "Pro-code archetype",
+                "pages": [
+                  "ey/tde-plataforma-agentica/pro-code-archetype/index",
+                  {
+                    "group": "Layers",
+                    "pages": [
+                      "ey/tde-plataforma-agentica/pro-code-archetype/api-layer",
+                      "ey/tde-plataforma-agentica/pro-code-archetype/agent-layer",
+                      "ey/tde-plataforma-agentica/pro-code-archetype/core-layer",
+                      "ey/tde-plataforma-agentica/pro-code-archetype/periphery-layer"
+                    ]
+                  },
+                  "ey/tde-plataforma-agentica/pro-code-archetype/request-flow",
+                  "ey/tde-plataforma-agentica/pro-code-archetype/design-principles",
+                  "ey/tde-plataforma-agentica/pro-code-archetype/add-an-agent"
+                ]
+              }
             ]
           }
         ]

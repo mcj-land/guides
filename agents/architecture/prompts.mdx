@@ -1,0 +1,13 @@
+---
+title: "Prompts"
+description: "Treat prompts as versioned configuration."
+---
+
+Prompts change more often than code. Store them outside the agent logic, in files in the repo or in a prompt registry, and load them at runtime.
+
+## Practices
+
+- **Version every prompt** and log which version produced each answer.
+- **Use templates** with variables instead of string concatenation.
+- **Test before you ship:** run a fixed set of evaluation cases on every prompt change.
+- **Roll out gradually:** switch versions by configuration so you can roll back fast.
