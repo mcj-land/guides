@@ -36,30 +36,6 @@
         ]
       },
       {
-        "tab": "Go",
-        "icon": "golang",
-        "groups": [
-          {
-            "group": "Introducción",
-            "pages": [
-              "go/index"
-            ]
-          }
-        ]
-      },
-      {
-        "tab": "Rust",
-        "icon": "rust",
-        "groups": [
-          {
-            "group": "Introducción",
-            "pages": [
-              "rust/index"
-            ]
-          }
-        ]
-      },
-      {
         "tab": "Azure",
         "icon": "microsoft",
         "groups": [
