@@ -106,6 +106,24 @@
             "pages": [
               "agents/index"
             ]
+          },
+          {
+            "group": "Pro-code agent archetype",
+            "pages": [
+              "agents/pro-code-archetype/index",
+              {
+                "group": "Layers",
+                "pages": [
+                  "agents/pro-code-archetype/api-layer",
+                  "agents/pro-code-archetype/agent-layer",
+                  "agents/pro-code-archetype/core-layer",
+                  "agents/pro-code-archetype/periphery-layer"
+                ]
+              },
+              "agents/pro-code-archetype/request-flow",
+              "agents/pro-code-archetype/design-principles",
+              "agents/pro-code-archetype/add-an-agent"
+            ]
           }
         ]
       },

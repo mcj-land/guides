@@ -1,0 +1,31 @@
+---
+title: "API layer"
+description: "Receives HTTP requests, validates them and routes them to the agent runtime."
+---
+
+Location: `src/main.py` and `src/api/`.
+
+## `main.py`
+
+Creates the FastAPI app and configures middleware.
+
+## `api/router.py`
+
+Registers the API routes. It gets the runtime from the container's agent provider, so the API depends only on the `BaseRuntime` contract.
+
+## `api/endpoints/`
+
+| Endpoint | Purpose |
+|---|---|
+| `responses/` | Returns a complete agent response |
+| `stream/` | Streams the agent response |
+| `health/` | Service health check |
+| `agent_card/` | Describes the available agents |
+
+## `api/request_handler.py`
+
+Normalizes incoming HTTP requests and propagates a `trace-id` for tracing.
+
+## `api/schemas/`
+
+Request and response DTOs.

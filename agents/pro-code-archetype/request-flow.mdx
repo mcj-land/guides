@@ -1,0 +1,32 @@
+---
+title: "Request flow"
+description: "How a request moves through the layers."
+---
+
+```mermaid
+sequenceDiagram
+  actor User
+  participant API as FastAPI (router, endpoints)
+  participant RH as request_handler
+  participant RT as MAFRuntime
+  participant AG as Agent
+  participant CORE as Core services
+  participant T as tools/
+  User->>API: HTTP request
+  API->>RH: Normalize request, set trace-id
+  RH->>RT: invoke() / stream()
+  RT->>AG: Run the matching agent
+  AG->>CORE: LLM, memory, prompts, tool registry
+  AG->>T: Call external tools when needed
+  AG-->>RT: Result
+  RT-->>API: Result
+  API-->>User: HTTP response or stream
+```
+
+1. The user sends an HTTP request to FastAPI.
+2. `api/router.py` matches it to an endpoint in `api/endpoints/`.
+3. `api/request_handler.py` normalizes the request and sets the `trace-id`.
+4. `agent/maf_runtime.py` runs the matching agent.
+5. The agent uses `llm_fabric/`, `memory_fabric/`, `prompt_manager/` and `tool_manager/`.
+6. Tools in `tools/` run when the agent calls them.
+7. The result returns through FastAPI to the user.
