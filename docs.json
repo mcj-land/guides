@@ -30,10 +30,9 @@
         "icon": "house",
         "groups": [
           {
-            "group": "Getting Started",
+            "group": "Overview",
             "pages": [
-              "index",
-              "quickstart"
+              "index"
             ]
           }
         ]
