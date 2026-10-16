@@ -60,13 +60,25 @@
         ]
       },
       {
-        "tab": "Artificial Intelligence",
+        "tab": "AI (LLMs)",
         "icon": "brain-circuit",
         "groups": [
           {
             "group": "Introducción",
             "pages": [
               "ai/index"
+            ]
+          }
+        ]
+      },
+      {
+        "tab": "AI (Agents)",
+        "icon": "robot",
+        "groups": [
+          {
+            "group": "Introducción",
+            "pages": [
+              "agents/index"
             ]
           }
         ]
