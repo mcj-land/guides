@@ -26,7 +26,7 @@
   "navigation": {
     "tabs": [
       {
-        "tab": "Inicio",
+        "tab": "Overview",
         "icon": "house",
         "groups": [
           {
@@ -43,7 +43,7 @@
         "icon": "python",
         "groups": [
           {
-            "group": "Introducción",
+            "group": "Introduction",
             "pages": [
               "python/index"
             ]
@@ -55,7 +55,7 @@
         "icon": "microsoft",
         "groups": [
           {
-            "group": "Introducción",
+            "group": "Introduction",
             "pages": [
               "azure/index"
             ]
@@ -67,7 +67,7 @@
         "icon": "aws",
         "groups": [
           {
-            "group": "Introducción",
+            "group": "Introduction",
             "pages": [
               "aws/index"
             ]
@@ -79,7 +79,7 @@
         "icon": "brain-circuit",
         "groups": [
           {
-            "group": "Introducción",
+            "group": "Introduction",
             "pages": [
               "ai/index"
             ]
@@ -91,7 +91,7 @@
         "icon": "robot",
         "groups": [
           {
-            "group": "Introducción",
+            "group": "Introduction",
             "pages": [
               "agents/index"
             ]
