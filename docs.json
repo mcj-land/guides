@@ -94,6 +94,12 @@
             "pages": [
               "ai/index"
             ]
+          },
+          {
+            "group": "Reasoning frameworks",
+            "pages": [
+              "ai/hipa"
+            ]
           }
         ]
       },
