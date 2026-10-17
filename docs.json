@@ -104,7 +104,8 @@
               "ai/tree-of-thoughts",
               "ai/react",
               "ai/plan-and-solve",
-              "ai/reflexion"
+              "ai/reflexion",
+              "ai/frameworks-with-claude"
             ]
           }
         ]
