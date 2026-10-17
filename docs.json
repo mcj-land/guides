@@ -158,7 +158,8 @@
           {
             "group": "TdE - Plataforma Agéntica",
             "pages": [
-              "ey/tde-plataforma-agentica/index"
+              "ey/tde-plataforma-agentica/index",
+              "ey/tde-plataforma-agentica/introduction"
             ]
           }
         ]

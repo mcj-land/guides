@@ -1,0 +1,81 @@
+---
+title: "Introduction"
+description: "Kickoff meeting notes for the Agentic Platform engagement."
+---
+
+## When and what was the meeting?
+
+| | |
+| --- | --- |
+| **Date** | 16/10/2026 |
+| **Project** | TdE - Plataforma Agéntica |
+| **Meeting type** | Introduction |
+
+## Who is involved?
+
+| Organisation | Role |
+| --- | --- |
+| EY | Engagement Lead |
+| Microsoft | Implementation and Azure |
+| Google | Cloud |
+
+## What are they building?
+
+The team is working on the following workstreams:
+
+- Archetype design
+- Observability
+- Archetype evolution
+- Implementation
+
+## How do they work?
+
+- Work is planned in weekly sprints.
+- Tasks are assigned through an Azure DevOps board.
+- Source code is managed in GitHub.
+
+## How are they implementing it?
+
+<Badge color="orange">To ask</Badge>
+
+The implementation approach has not been confirmed yet.
+
+## What is the current state of the infrastructure?
+
+The platform has been deployed up to the agent runtime. The remaining components have not been deployed yet.
+
+The following services were deployed manually by Telefónica:
+
+- APIM / API gateway
+- Foundry
+- Foundry queues
+- Blob storage
+- Azure AI Search
+
+The deployment method for the rest of the infrastructure has not been confirmed. It may be the Azure CLI in a CI/CD pipeline, or Terraform.
+
+## What are the risks?
+
+- **Limited understanding of the platform.** Cristian del Moral has raised concerns that EY does not have a clear understanding of what has been built.
+- **Disaster recovery.** The manually deployed services cannot be reproduced easily. Redeploying in another region after an incident would be difficult.
+- **Handover.** EY takes over maintenance of the platform from January, so any gaps in documentation become EY's responsibility.
+
+## What is expected from us?
+
+Carlos has asked for the following:
+
+1. Document how the infrastructure has been deployed.
+2. Identify which parts of the runtime EY does not know well.
+3. Understand what is being deployed by hand, and what Carlos Pimentel and Paco Rebollo have set up for the services.
+
+## Who is working on it?
+
+| Name | Role |
+| --- | --- |
+| Miguel Sánchez | DevOps |
+| Antonio Villarán | Cloud Architect |
+
+## What is still unclear?
+
+- How is the platform being implemented?
+- Is the infrastructure deployed with the Azure CLI in CI/CD, or with Terraform?
