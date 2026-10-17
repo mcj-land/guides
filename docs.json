@@ -165,6 +165,42 @@
             ]
           }
         ]
+      },
+      {
+        "tab": "Customer (OBS)",
+        "icon": "graduation-cap",
+        "groups": [
+          {
+            "group": "Introduction",
+            "pages": [
+              "obs/index"
+            ]
+          },
+          {
+            "group": "Mathematics Bootcamp",
+            "pages": [
+              "obs/mathematics-bootcamp/index"
+            ]
+          },
+          {
+            "group": "Mathematical Fundamentals for AI",
+            "pages": [
+              "obs/mathematical-fundamentals-for-ai/index"
+            ]
+          },
+          {
+            "group": "Master Thesis Tutoring",
+            "pages": [
+              "obs/master-thesis-tutoring/index"
+            ]
+          },
+          {
+            "group": "Master Thesis Panel",
+            "pages": [
+              "obs/master-thesis-panel/index"
+            ]
+          }
+        ]
       }
     ]
   },
