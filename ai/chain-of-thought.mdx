@@ -1,0 +1,83 @@
+---
+title: "Chain-of-Thought (CoT)"
+description: "Make the model reason step by step before it answers."
+---
+
+Chain-of-Thought (CoT) is a prompting technique that asks the model to write intermediate reasoning steps before the final answer. It was introduced by [Wei et al. (2022)](https://arxiv.org/abs/2201.11903) and is the base for most of the other frameworks in this section.
+
+The idea is simple: an LLM generates one token at a time, so it can only "think" through the text it writes. When you let it write the steps, it has room to work through the problem instead of jumping to an answer.
+
+## How it works
+
+```mermaid
+flowchart LR
+  Q[Question] --> S1[Step 1] --> S2[Step 2] --> S3[Step ...] --> A[Answer]
+```
+
+| Variant | How you trigger it | When to use it |
+|---|---|---|
+| Few-shot CoT | Add examples that show the question, the reasoning and the answer | The task has a specific reasoning format you want the model to copy |
+| Zero-shot CoT | Add an instruction such as "Let's think step by step" ([Kojima et al., 2022](https://arxiv.org/abs/2205.11916)) | You have no examples, or you need a quick improvement |
+| Native reasoning | Use a reasoning model or enable extended thinking | The model already reasons internally before it answers |
+
+### 1. Decompose
+
+The model splits the question into smaller steps. Each step depends on the one before it.
+
+### 2. Reason step by step
+
+The model solves each step in order and writes the intermediate result. Errors become visible because each step is in the text.
+
+### 3. Conclude
+
+The model states the final answer, derived from the last step. Ask for a clear marker, such as `Answer:`, so you can parse it.
+
+## Apply Chain-of-Thought
+
+### In a single prompt
+
+```text
+Solve the problem below. Reason step by step and show each step.
+When you finish, write the final answer on its own line,
+starting with "Answer:".
+
+Problem: {problem}
+```
+
+### In a pipeline or agent
+
+| Need | Approach |
+|---|---|
+| Hide reasoning from the user | Ask for the reasoning inside tags (for example `<thinking>`) and strip them before you show the answer |
+| Parse the answer reliably | Ask for a final marker or a structured output field |
+| Reasoning model available | Prefer native thinking over prompted CoT; set a thinking budget instead of writing the steps yourself |
+
+## Use cases
+
+- **Math and calculations**: word problems, unit conversions, estimates.
+- **Logic and rules**: eligibility checks, policy evaluation, scheduling constraints.
+- **Multi-step questions**: questions that need to combine several facts.
+
+## Benefits
+
+- **Accuracy**: better results on multi-step problems, especially with larger models.
+- **Transparency**: you can read the steps and find where the reasoning failed.
+- **Low cost to adopt**: one instruction or a few examples, no extra infrastructure.
+
+## Limitations
+
+- The written reasoning is not always the reasoning the model used. A correct-looking chain can lead to a wrong answer, and the other way round.
+- One single chain: an early mistake carries through to the end.
+- More output tokens mean more cost and latency.
+- Small gains, or none, on simple factual questions and with reasoning models that already think internally.
+
+## How it differs from other frameworks
+
+| Framework | Difference from Chain-of-Thought |
+|---|---|
+| [HIPA](/ai/hipa) | HIPA defines *what* stages the reasoning goes through (perception, memory, decision, response). CoT only asks for steps, with no fixed structure |
+| [Self-Consistency](/ai/self-consistency) | Runs several CoT chains and votes on the answer. CoT runs one |
+| [Tree of Thoughts](/ai/tree-of-thoughts) | Explores and evaluates several branches at each step and can backtrack. CoT is a single straight line |
+| [ReAct](/ai/react) | Interleaves reasoning with tool calls and real observations. CoT reasons only from what is already in the context |
+| [Plan-and-Solve](/ai/plan-and-solve) | Writes the full plan first, then executes it. CoT plans and solves at the same time |
+| [Reflexion](/ai/reflexion) | Reviews the result and retries with feedback. CoT gives one attempt with no review |

@@ -116,3 +116,14 @@ Log the output of every stage. When an answer is wrong, you can see whether the 
 - Stated reasoning is not always the reasoning the model actually used. Validate decisions with tests, rubrics or human review.
 - More stages mean more tokens and latency. Use the full structure for analysis and decisions, not for simple factual questions.
 - Output quality still depends on the knowledge you provide in working memory.
+
+## How it differs from other frameworks
+
+| Framework | Difference from HIPA |
+|---|---|
+| [Chain-of-Thought](/ai/chain-of-thought) | CoT asks for reasoning steps with no fixed structure. HIPA defines the stages those steps go through, from understanding the user to delivering the answer |
+| [Self-Consistency](/ai/self-consistency) | Self-Consistency samples many answers and votes. HIPA runs one structured process and justifies a single recommendation |
+| [Tree of Thoughts](/ai/tree-of-thoughts) | ToT searches across alternatives at every step. HIPA compares alternatives once, in the decision-making stage |
+| [ReAct](/ai/react) | ReAct defines how to get information with tools. HIPA leaves that to the working memory stage, where ReAct can be one way to fill it |
+| [Plan-and-Solve](/ai/plan-and-solve) | Plan-and-Solve structures how to execute a task. HIPA structures how to understand a need and support a decision |
+| [Reflexion](/ai/reflexion) | Reflexion retries automatically with an evaluator. HIPA's feedback comes from the user in the next turn |

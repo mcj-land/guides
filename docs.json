@@ -96,9 +96,15 @@
             ]
           },
           {
-            "group": "Reasoning frameworks",
+            "group": "Frameworks",
             "pages": [
-              "ai/hipa"
+              "ai/hipa",
+              "ai/chain-of-thought",
+              "ai/self-consistency",
+              "ai/tree-of-thoughts",
+              "ai/react",
+              "ai/plan-and-solve",
+              "ai/reflexion"
             ]
           }
         ]
