@@ -1,0 +1,195 @@
+---
+title: "Use frameworks in the chat"
+description: "Copy-paste prompts to make Claude follow each reasoning framework in a normal chat, without code."
+---
+
+You don't need code or an API to use these frameworks. In a normal chat with Claude, the framework is simply **how you write your message**. This page gives you a ready-to-use prompt for each one.
+
+To use the frameworks from code, see [Apply frameworks with Claude Opus 5.5](/ai/frameworks-with-claude).
+
+## Before you start
+
+Claude Opus 5.5 already thinks before it answers. You don't need tricks like "think step by step". What a framework adds is **structure**: what Claude looks at, in what order, and what shape the answer takes.
+
+Three habits help with every framework:
+
+- **Give context.** Say who you are, who the answer is for and what you will do with it.
+- **Paste or attach the material.** Documents, data, emails, screenshots. Claude can only reason over what it can see.
+- **Ask for a short explanation, not the full reasoning.** "Explain in 3 bullets how you got there" works. Asking Claude to write out everything it thought makes answers long and harder to read.
+
+<Tip>
+If you reuse the same framework often, save the prompt as project instructions (or your app's equivalent). Then every chat in that project follows the framework without pasting it again.
+</Tip>
+
+## Which one do I need?
+
+| I want to... | Use |
+|---|---|
+| Get a recommendation I can justify to others | [HIPA](#hipa) |
+| Get one correct answer to a tricky question | [Chain-of-Thought](#chain-of-thought) |
+| Know how sure I can be about an answer | [Self-Consistency](#self-consistency) |
+| Explore options before committing to one | [Tree of Thoughts](#tree-of-thoughts) |
+| Get an answer based on real sources, not memory | [ReAct](#react) |
+| Get a big task done without missing steps | [Plan-and-Solve](#plan-and-solve) |
+| Get a better version of a draft | [Reflexion](#reflexion) |
+
+## HIPA
+
+**Use it for:** decisions and recommendations. Choosing a tool, a vendor, an approach, a priority.
+
+```text
+Help me make a decision. Structure your answer in four sections:
+
+1. Understanding: restate what I'm asking, my goal and my constraints.
+   List any assumptions you make.
+2. Relevant facts: the facts from the context below that matter for this decision.
+   Mark anything you're not sure about.
+3. Options and criteria: at least two realistic options. The criteria you use
+   (cost, risk, effort, impact) and how each option scores.
+4. Recommendation: your recommendation first, then the main trade-off,
+   the next steps and what would change your mind.
+
+Write it for: [who will read it, for example "my manager, non-technical"].
+
+The decision: [describe it]
+Context: [paste or attach the information]
+```
+
+**Tip:** if a section is weak, ask about that section only. For example: "Add one more option to section 3 and score it the same way."
+
+## Chain-of-Thought
+
+**Use it for:** calculations, logic, rules, questions that need several steps.
+
+With Opus 5.5 you don't need a special prompt: Claude reasons on its own. Just ask clearly and ask for a short explanation, so you can check the answer.
+
+```text
+[Your question]
+
+Give me the answer first, then explain in 3 bullets maximum how you got it.
+```
+
+**Tip:** for hard problems, pick the most capable model and, if your chat app has a thinking or effort option, set it higher.
+
+## Self-Consistency
+
+**Use it for:** questions where a wrong answer is costly and you want to know how confident to be.
+
+The idea is to solve the same problem several independent ways and see if they agree.
+
+**Option 1, in one message:**
+
+```text
+Solve this problem three times, each time with a different method.
+Don't let one method influence the others.
+Then compare the three results:
+- If they agree, give the answer and say "high confidence".
+- If they don't, explain where they differ and which one you trust more and why.
+
+Problem: [describe it]
+```
+
+**Option 2, more independent:** open three new chats, paste the same question in each, and compare the answers yourself. Different chats don't see each other, so the answers are truly independent.
+
+**Tip:** if the answers disagree, that is useful information. Treat the topic as uncertain and check it with a person or a source.
+
+## Tree of Thoughts
+
+**Use it for:** design problems, planning, puzzles, anything where an early choice can lead to a dead end.
+
+```text
+I want to explore options before choosing one.
+
+1. Propose three different approaches to the problem below.
+2. For each one, describe the first two steps and the main risk.
+3. Score each approach from 1 to 10 against these criteria: [your criteria].
+4. Drop the weakest approach and explain why.
+5. Develop the best approach in detail.
+
+Problem: [describe it]
+Constraints: [list them]
+```
+
+**Tip:** do it over several messages. After step 3, you can say "I prefer approach B, develop that one" instead of letting Claude choose.
+
+## ReAct
+
+**Use it for:** questions that need current or internal information: prices, documentation, facts you need to verify.
+
+ReAct means *reason, then act, then look at the result*. In the chat, the "actions" are the tools Claude has there: web search, your uploaded files, or connected apps (if your workspace has them enabled).
+
+```text
+Answer the question below using sources, not memory.
+
+- Search [the web / the attached documents / our connected wiki] before you answer.
+- For every important claim, tell me where it comes from (link or document name).
+- If you can't find something, say so instead of guessing.
+
+Question: [your question]
+```
+
+**Tip:** if Claude doesn't have a tool for the source you need, paste the material into the chat. Pasting text does the same job as a search.
+
+## Plan-and-Solve
+
+**Use it for:** big tasks: a migration checklist, a report, a project plan, a training session.
+
+The chat is ideal for this one, because you can review the plan before Claude does the work.
+
+**Message 1:**
+
+```text
+I need to [describe the task].
+
+Don't do the task yet. First, write a numbered plan of the steps needed.
+Each step should be one clear action. Tell me if you need any information
+from me before you start.
+```
+
+**Message 2,** after you review and adjust the plan:
+
+```text
+The plan is good [or: change step 3 to ...]. Now execute step 1 only.
+```
+
+Then continue with "Next step" until the task is done.
+
+**Tip:** doing one step per message keeps each answer short and easy to review. For a short task, you can ask for the plan and the execution in the same message.
+
+## Reflexion
+
+**Use it for:** improving something: a document, an email, code, a presentation.
+
+Reflexion means *try, check against criteria, learn, try again*. It works best when the criteria are concrete.
+
+```text
+Write [the thing you need].
+
+Then review your own draft against this checklist:
+- [criterion 1, for example "fits on one page"]
+- [criterion 2, for example "no technical jargon"]
+- [criterion 3, for example "includes a clear call to action"]
+
+List what fails the checklist, then write an improved version that fixes every point.
+```
+
+**Tip:** you are the best evaluator. After any answer, reply with concrete feedback ("too long, and section 2 repeats section 1"). Claude uses it in the next version, which is Reflexion with a human in the loop.
+
+## Combine them
+
+The frameworks work well together in one conversation. For example, to prepare a proposal for your team:
+
+<Steps>
+  <Step title="Plan-and-Solve">
+    Ask for a plan of the proposal and approve it.
+  </Step>
+  <Step title="ReAct">
+    For each section, ask Claude to use the attached documents and cite them.
+  </Step>
+  <Step title="HIPA">
+    For the key decision in the proposal, ask for the four-section analysis.
+  </Step>
+  <Step title="Reflexion">
+    At the end, ask Claude to review the full proposal against your checklist and improve it.
+  </Step>
+</Steps>
