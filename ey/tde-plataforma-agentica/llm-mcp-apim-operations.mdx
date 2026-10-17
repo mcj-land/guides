@@ -1,0 +1,119 @@
+---
+title: "LLM and MCP operations in APIM"
+description: "Meeting notes on how Telefónica operates LLMs and MCP servers behind APIM."
+---
+
+## When and what was the meeting?
+
+| | |
+| --- | --- |
+| **Date** | 16/10/2026 |
+| **Project** | TdE - Plataforma Agéntica |
+| **Topic** | Telefónica's operations manual for LLMs and MCP in APIM |
+
+## What does the whole setup look like?
+
+The meeting walked through the steps to get an agent talking to a model and to its tools. In Azure, it boils down to this:
+
+1. **Foundry** hosts the model. You create a project and deploy a model in it.
+2. **APIM** sits in front of the model as an AI gateway. The model's endpoint is imported into APIM as an API.
+3. **Products and subscriptions** in APIM decide who can call that API. Each agent gets its own keys.
+4. **MCP servers** also go through APIM, so the agent reaches its tools the same way it reaches the model.
+
+The agent never calls Foundry or the backend APIs directly. Everything goes through APIM, which is where access, limits and policies are applied.
+
+The rest of these notes follow those four steps.
+
+## Step 1: How is the model deployed in Foundry?
+
+<Note>
+In Azure, a model deployment lives inside a Foundry project, which belongs to a subscription. Each deployment has a deployment type. **Data Zone Standard** keeps processing inside a Microsoft-defined zone, the EU in this case, and bills per token. Content filters only take effect once they're attached to a deployment.
+</Note>
+
+What Telefónica does:
+
+1. Create the Foundry project if it doesn't exist and assign it to a subscription. This already runs in CI/CD.
+2. Deploy a model for the use case's agent.
+3. Name the deployment following their naming convention. They mentioned HIPA here, which we still need to look into.
+4. Use Data Zone Standard so the model runs in Europe.
+5. Attach GuardRailsV2 as the guardrail.
+
+Still in progress:
+
+- **Model whitelist.** They want a list of approved models, but it isn't managed yet.
+- **Token limits.** They aren't changing them for now, but they're looking at it.
+- **More guardrails.** They want to add more beyond GuardRailsV2 later on.
+
+## Step 2: How is the model exposed through APIM?
+
+<Note>
+APIM can import a model endpoint from Foundry as an API. On import, it creates one operation for each REST endpoint the model exposes and sets up a managed identity so APIM can reach the deployment. When importing, you pick a client compatibility option, which decides the URL shape clients call.
+</Note>
+
+What Telefónica does:
+
+- They import the model as the Language API. It comes with 97 operations, and they prune it down to the 2 that are actually used. APIM caps how many operations an account can have in Development and Production, so the extra ones add up quickly.
+- They want an API template with just those 2 operations, so it's quicker to deploy.
+- They have to juggle the `/openai/v1` path when setting up the backend. One side expects it and the other doesn't add it by default, so it gets added or removed either in APIM or in the client.
+
+## Step 3: How does an agent get access?
+
+<Note>
+In APIM, a **product** groups one or more APIs. A **subscription** to that product gives the caller its keys. The caller sends a key with every request, and APIM uses it to identify who's calling and to apply that product's policies.
+</Note>
+
+What Telefónica does for each new agent:
+
+1. Create a product, which gives them the keys to call the API.
+2. Create the subscription.
+
+The problem is that this fails when things already exist. The open question is when in the lifecycle to create the product and subscription. One idea is to do it when the repo is cloned. This is what's usually called bootstrapping a solution.
+
+## Step 4: How are MCP servers handled?
+
+<Note>
+APIM can work with MCP in two ways. It can turn a REST API it already manages into an MCP server, where each selected operation becomes a tool. It can also sit in front of an MCP server that runs somewhere else. Either way, APIM policies apply to the tools.
+</Note>
+
+What Telefónica does:
+
+- APIM acts as the proxy in front of each MCP server.
+- Names must say whether they use OAuth or Basic Auth. The name is what's used to call the final application, so the same app can show up twice, once with each auth method.
+
+Where it gets hard:
+
+- Simple middleware APIs with a couple of operations are fine.
+- Telco APIs are another story. They have 10 to 15 operations each, and every one of them works differently.
+
+They also talked about:
+
+- How to build the API that sits behind the MCP server.
+- Where the inventory of what already exists lives.
+- Whether to upload the full OpenAPI spec or a pruned one.
+
+## What about capacity?
+
+<Note>
+**PTUs** (provisioned throughput units) reserve model capacity up front instead of paying per token. They're a different deployment type from Data Zone Standard.
+</Note>
+
+Nobody has decided yet how PTUs will be organised once they're available.
+
+## How much should be automated?
+
+- **EY** wants to keep moving on automation and review it afterwards.
+- **Paco Rebollo** wants to stay realistic and hold off on full automation in Production. His example: what happens if someone deploys a Haiku model when AI governance had decided against it?
+
+This ties back to the model whitelist in step 1. Until it exists, nothing stops a pipeline from deploying an unapproved model.
+
+## What are the next steps?
+
+EY is going through the documentation Telefónica shared and working out what can be automated.
+
+## What is still unclear?
+
+- What is HIPA, and how does it affect the naming convention?
+- How will the model whitelist be managed?
+- When should the product and subscription be created during bootstrapping?
+- Should MCP servers get the full OpenAPI spec or a pruned one?
+- How will PTUs be organised once they can be used?
