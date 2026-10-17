@@ -1,0 +1,96 @@
+---
+title: "Introduction"
+description: "Kickoff meeting notes for the Transformation engagement."
+---
+
+## When and what was the meeting?
+
+| | |
+| --- | --- |
+| **Date** | 16/10/2026 |
+| **Project** | TdE - Transformación |
+| **Meeting type** | Introduction |
+
+## What is the goal?
+
+In short: get rid of the TrustPortal licences and cut down on Blue Prism ones.
+
+## Which workstreams are in scope?
+
+- CEX
+- B2B
+- TELCO
+- TES (Salesforce)
+- COL
+
+<Warning>
+Watch out with TELCO, TES and COL. These are the ones Carlos was discussing the day before, because Microsoft is trying to keep them off Power Pages.
+</Warning>
+
+## How is the project managed?
+
+<Badge color="orange">To ask</Badge>
+
+We don't know yet how this is run.
+
+## What does the architecture look like?
+
+### Front end
+
+The ARTE projects are moving off TrustPortal and into a React single-page app hosted on Power Pages. Most of it is being vibe-coded.
+
+### Orchestration
+
+Nothing fancy here: an API that sits behind the front end and collects the information each flow needs.
+
+### Domain layer
+
+This is where the old Blue Prism processes now live:
+
+- "Averías"
+- "Facturación"
+- "VT, HECO, …"
+- "Altas y Bajas"
+- "Panel de Control"
+
+There was already a hyperautomation effort around VT, HECO and the rest, so advisors don't have to open tickets in each tool. They do it all from ARTE.
+
+Anything that goes through an API is being automated. Anything that needs to click through screens stays in Blue Prism.
+
+## How are they implementing it?
+
+Orchestration runs on Azure Durable Functions. The processes themselves are FastAPI services.
+
+### Why Durable Functions?
+
+A run can take a while and goes through a lot of steps. If something restarts halfway, you don't want to start from scratch. Durable Functions remembers where each workflow is, so it just picks up from the last step.
+
+It also comes with patterns for most of what the platform has to do:
+
+- **Function chaining**: one step after another, each using the result of the last.
+- **Fan-out / fan-in**: run several things at once, then put the results together.
+- **Async HTTP APIs**: the caller gets an answer straight away and checks back later.
+- **Monitors**: keep checking an outside system until it's ready.
+- **Human interaction**: stop and wait for someone to approve.
+
+## How do they work?
+
+- Weekly sprints.
+- An Azure DevOps board to split up the work.
+- GitHub. The code is in EY's GitHub for now, and the plan is to move it to Telefónica's.
+
+## What is expected from us?
+
+We're on code review:
+
+| Area | Stack | Reviewer |
+| --- | --- | --- |
+| Front end | React | Moisés |
+| Back end | Python | Alejandro |
+
+On Monday a web specialist joins them, which should help on the front end.
+
+## What is still unclear?
+
+- Are they using Mística, Telefónica's design system?
+- How is the project run day to day?
